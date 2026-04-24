@@ -1,0 +1,49 @@
+.footer-container {
+    display: flex;
+    width: 100%;
+    background-color: #1C5F21;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    min-height: 70px;
+}
+
+.footer-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-container li {
+    display: inline-block;
+    padding: 8px 12px;
+}
+
+@media screen and (max-width: 555px) {
+    .footer-container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 10px;
+        height: auto;
+        /* låt höjden växa med innehållet */
+    }
+
+    .footer-container h1 {
+        margin: 0;
+        font-size: 1.4rem;
+    }
+
+    .footer-container ul {
+        gap: 4px;
+    }
+
+    .footer-container li {
+        padding: 4px 8px;
+    }
+}

@@ -1,0 +1,91 @@
+.Navbar {
+    width: 100%;
+    border-bottom: 1px solid #1e6827;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.53);
+    position: relative;
+}
+
+.nav-container {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.nav-link {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px;
+    margin-left: 13px;
+    color: #19521E;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    transform: scale(1.2);
+    border-radius: 5px;
+    background-color: rgb(232, 239, 239);
+    color: #19521E;
+}
+
+.menu li {
+    display: inline;
+    margin: 7px;
+    padding: 7px;
+}
+
+/* Hamburger — gömd på desktop */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #19521E;
+    padding: 4px;
+}
+
+/* Mobile dropdown — gömd som standard */
+.mobile-menu {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid #d0e8d2;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu .MobileLinks {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    margin: 0;
+    list-style: none;
+}
+
+.mobile-menu .MobileLinks li {
+    display: block;
+    margin: 0;
+    padding: 4px 0;
+    border-bottom: 1px solid #e8f0e8;
+}
+
+.mobile-menu .MobileLinks li:last-child {
+    border-bottom: none;
+}
+
+
+
+@media screen and (max-width: 766px) and (min-width:360px) {
+    .desktopMenu {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex;
+        align-items: center;
+    }
+}

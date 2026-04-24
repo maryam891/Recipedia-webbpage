@@ -1,0 +1,181 @@
+.iconTextContainer {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    top: 285px;
+    right: 10px;
+    height: auto;
+    width: auto;
+    background: transparent;
+}
+
+.Recipes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    height: 100%;
+    margin-bottom: 35px;
+    gap: 15px;
+    width: auto;
+
+}
+
+
+.recipe-container {
+    height: 440px;
+    width: 360px;
+    position: relative;
+    overflow: hidden;
+}
+
+.fav-recipe-container .iconTextContainer {
+    top: 285px;
+    right: 10px;
+}
+
+.iconTextContainer svg {
+    background: transparent;
+    margin-top: 30px;
+}
+
+.removeFav-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.removeFav-popup {
+    width: 400px;
+    height: 300px;
+    z-index: 999;
+    position: fixed;
+    background-color: white;
+    padding-top: 40px;
+    text-align: center;
+    border-radius: 5px;
+    top: 20%;
+    left: 35%;
+}
+
+.yes-btn {
+    height: 40px;
+    width: 100px;
+    background-color: white;
+    border: solid 2px #19521E;
+    cursor: pointer;
+    color: #19521E;
+    margin: 5px;
+    border-radius: 5px;
+    transition: transform .3s ease-in-out;
+}
+
+.no-btn {
+    transition: transform .3s ease-in-out;
+    height: 40px;
+    width: 100px;
+    background-color: white;
+    border: solid 2px #a21927;
+    cursor: pointer;
+    color: #a21927;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.yes-btn:hover {
+    background-color: #19521E;
+    border: none;
+    color: white;
+    transform: scale(1.1);
+}
+
+.no-btn:hover {
+    background-color: #a21927;
+    border: none;
+    color: white;
+    transform: scale(1.1);
+}
+
+.ok-btn {
+    transition: transform .3s ease-in-out;
+    height: 40px;
+    width: 100px;
+    background-color: #19521E;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-top: 40px;
+    border-radius: 5px;
+}
+
+.popup-btn-container {
+    margin-top: 30px;
+    margin-left: 40px;
+    height: 100px;
+    width: 300px;
+}
+
+.removeFav-popup h2 {
+    color: #19521E;
+}
+
+.iconTextContainer .addTofavHoverText {
+    visibility: hidden;
+
+}
+
+.iconTextContainer svg:hover~.addTofavHoverText {
+    visibility: visible;
+}
+
+.addTofavHoverText {
+    position: absolute;
+    bottom: 120%;
+    right: 0;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+@media screen and (max-width:469px) and (min-width:360px) {
+    .removeFav-popup {
+        width: 350px;
+        height: 300px;
+        left: 10%;
+    }
+}
+
+@media screen and (max-width:579px) and (min-width:469px) {
+    .removeFav-popup {
+        width: 350px;
+        height: 300px;
+        left: 15%;
+    }
+
+}
+
+@media screen and (max-width:760px) and (min-width:579px) {
+
+    .removeFav-popup {
+        left: 20%;
+    }
+
+}
+
+@media screen and (max-width:851px) and (min-width:760px) {
+    .removeFav-popup {
+        left: 30%;
+    }
+
+}
