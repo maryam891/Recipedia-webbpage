@@ -35,7 +35,7 @@ require("dotenv").config();
     const app = express();
     app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
-    app.get("*", (req, res) => {
+    app.get("/{*path}", (req, res) => {
       res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
     });
     app.use(express.json());
@@ -208,7 +208,7 @@ require("dotenv").config();
         instructionsSection: instructionsDetail,
       });
     });
-    app.get("*", (req, res) => {
+    app.get("/{*path}", (req, res) => {
       res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
     });
     app.listen(8080, () => {

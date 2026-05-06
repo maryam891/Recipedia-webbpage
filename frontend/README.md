@@ -5,7 +5,7 @@ Browse through a variety of recipes and save your favorites for easy access.
 
 ## ✨ Features
 
-- Login/Registration with cookie session
+- 🍪 Login/Registration with cookie session
 - 🔍 Browse through a variety of recipes
 - ❤️ Save recipes to your favorites
 
