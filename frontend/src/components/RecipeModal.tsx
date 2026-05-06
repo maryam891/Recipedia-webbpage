@@ -39,7 +39,7 @@ export default function RecipeModal({ recipe, setModalOpen, modalOpen, setClicke
 
     useEffect(() => {
         if (!recipe) return
-        fetch('http://localhost:8080/recipes/' + clickedRecipe.id)
+        fetch('/recipes/' + clickedRecipe.id)
             .then((response) => response.json())
             .then((result) => {
                 setRecipeDetails(result)

@@ -1,4 +1,21 @@
 
+-- CREATE TABLE FavoriteRecipes(
+--     favorite_id INTEGER PRIMARY KEY,
+--     userId INTEGER,
+--     recipe_id INTEGER,
+--     FOREIGN KEY(userId) REFERENCES Users(id),
+--     FOREIGN KEY(recipe_id) REFERENCES recipes(id)
+-- )
+-- Create TABLE Users (
+--     id INTEGER PRIMARY KEY,
+--     name TEXT,
+--     email TEXT NOT NULL,
+--     password TEXT NOT NULL
+-- )
+
+-- INSERT INTO Users (name, email, password) VALUES ('testUser', 'testUser@gmail.com', 'test123');
+
+
 -- CREATE TABLE recipes (
 --   id INTEGER PRIMARY KEY,
 --   name TEXT NOT NULL,

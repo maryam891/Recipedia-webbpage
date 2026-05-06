@@ -52,12 +52,14 @@
 }
 
 .removeFav-popup {
-    width: 400px;
-    height: 300px;
+    max-width: 400px;
+    width: auto;
+    height: auto;
+    min-height: 300px;
     z-index: 999;
     position: fixed;
     background-color: white;
-    padding-top: 40px;
+    padding: 20px;
     text-align: center;
     border-radius: 5px;
     top: 20%;
@@ -117,8 +119,8 @@
 .popup-btn-container {
     margin-top: 30px;
     margin-left: 40px;
-    height: 100px;
-    width: 300px;
+    height: auto;
+    width: auto;
 }
 
 .removeFav-popup h2 {
@@ -150,9 +152,12 @@
 
 @media screen and (max-width:469px) and (min-width:360px) {
     .removeFav-popup {
-        width: 350px;
-        height: 300px;
+        max-width: 275px;
         left: 10%;
+    }
+
+    .popup-btn-container {
+        margin-left: 0px;
     }
 }
 
@@ -162,6 +167,8 @@
         height: 300px;
         left: 15%;
     }
+
+
 
 }
 

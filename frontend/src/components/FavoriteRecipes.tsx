@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import { AiFillHeart } from "react-icons/ai";
 import type { Recipe } from "./Recipes"
@@ -18,6 +18,27 @@ export default function FavoriteRecipes() {
     const navigate = useNavigate()
     const addFav = useContext(FavContext)
 
+    function getFav() {
+        fetch("/getFavoriteRecipes", {
+            headers: {
+                'Content-type': 'application/json',
+            },
+            credentials: 'include' as const,
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result) {
+                    addFav.setFavRecipe(result)
+                }
+
+            })
+    }
+
+    useEffect(() => {
+        getFav()
+    }, [])
+
+
     return (
         <><main>
             {confirmRemoveFaveRecipe === true &&
@@ -28,7 +49,7 @@ export default function FavoriteRecipes() {
                             if (selectedRecipeToRemove) {
                                 setConfirmRemoFavRecipe(false); const updated = addFav.favRecipe.filter(fav => fav.id !== selectedRecipeToRemove.id)
                                 addFav.setFavRecipe(updated)
-                                localStorage.setItem("addToFav", JSON.stringify(updated))
+
                             }
                         }
                         } className='ok-btn'>Ok</button>

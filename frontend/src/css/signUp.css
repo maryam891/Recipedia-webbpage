@@ -1,0 +1,398 @@
+.Signup {
+    display: flex;
+    transform: translate(50%, 7%);
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    min-height: 700px;
+    width: 50%;
+    margin-bottom: 70px;
+    background-color: rgba(255, 255, 255, 0.413);
+    border-radius: 7px;
+    border: solid 2px #1C5F21;
+}
+
+#signUpSection button {
+    transition: transform .3s ease-in-out;
+    margin-top: 10px;
+    height: 30px;
+    width: 70px;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    background-color: #1C5F21;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.failedSignUpBtn {
+    height: 40px;
+    width: 70px;
+    transform: scale(1.1);
+    border-radius: 5px;
+}
+
+.failedSignUpBtn:hover {
+    border: none;
+    background: #1C5F21;
+    color: white;
+    box-shadow: #191919 1px 1px 1px;
+}
+
+#signUpSection button:hover {
+    background-color: #1C5F21;
+    color: white;
+    border: none;
+    box-shadow: #191919 1px 1px 1px;
+}
+
+
+#signUpSection form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: auto;
+    min-height: 700px;
+    width: 380px;
+
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.errorPopUp {
+    top: 20%;
+    left: 32%;
+    position: fixed;
+    width: auto;
+    max-width: 400px;
+    height: 400px;
+    background-color: white;
+    text-align: center;
+    border-radius: 5px;
+    color: #19521E;
+    border: solid 2px #19521E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.welcomePopup {
+    top: 20%;
+    left: 32%;
+    min-width: 300px;
+    max-width: 400px;
+    width: auto;
+    height: 200px;
+    background-color: white;
+    text-align: center;
+    border-radius: 5px;
+    color: #19521E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.errorPopUp h2 {
+    padding-bottom: 20px;
+    color: #1C5F21
+}
+
+.errorPopUp p {
+    padding: 10px;
+}
+
+.errorPopUp button {
+    transition: transform .3s ease-in-out;
+    height: 40px;
+    width: 100px;
+    background-color: #19521E;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-top: 40px;
+    border-radius: 5px;
+}
+
+#signUpSection input {
+    width: 200px;
+    background-color: rgba(197, 195, 230, 0.326);
+    border-radius: 3px;
+    height: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#signUpSection label {
+    color: #1C5F21;
+    padding-bottom: 5px;
+}
+
+#signUpSection {
+    padding-top: 30px;
+}
+
+#signUpSection h1 {
+    padding-bottom: 20px;
+    color: #1C5F21;
+}
+
+.signUpTextContainer {
+    margin-top: 30px;
+    height: 10px;
+    width: 180px;
+
+}
+
+.signUpTextContainer p {
+    text-decoration: underline;
+    font-size: 0.8rem;
+    color: #1C5F21;
+    cursor: pointer;
+}
+
+
+.imageSection img {
+    height: 120px;
+    width: 120px;
+}
+
+
+.confirmPassword-Error {
+    color: rgb(134, 19, 32);
+    font-size: 13px;
+    margin: 0;
+    height: auto;
+    width: 200px;
+}
+
+
+@media screen and (max-width: 407px) and (min-width: 360px) {
+
+    .errorPopUp {
+        left: 10%;
+        max-width: 290px;
+
+    }
+
+    .welcomePopup {
+        left: 10%;
+        max-width: 290px;
+
+    }
+
+    .Signup {
+        width: 74%;
+        transform: translate(20%, 5%);
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    #signUpSection form {
+        justify-content: center;
+        align-items: center;
+        min-height: 700px;
+        width: auto;
+
+    }
+
+    #signUpSection h1 {
+        text-align: center;
+    }
+
+    #signUpSection label {
+        align-self: center;
+        padding-top: 10px;
+
+    }
+
+    #signUpSection button {
+        width: 90px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .imageSection {
+        height: 200px;
+
+
+    }
+
+}
+
+@media screen and (max-width: 500px) and (min-width: 407px) {
+    .Signup {
+        width: 70%;
+        transform: translate(20%, 5%);
+    }
+
+    #signUpSection form {
+        justify-content: center;
+        align-items: center;
+        min-height: 700px;
+        width: auto;
+
+    }
+
+
+    #signUpSection h1 {
+        text-align: center;
+    }
+
+    #signUpSection label {
+        align-self: center;
+        padding-top: 5px;
+
+    }
+
+    #signUpSection button {
+        width: 90px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+
+    .imageSection {
+        height: 200px;
+
+    }
+
+    .errorPopUp {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .welcomePopup {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+}
+
+@media screen and (max-width: 646px) and (min-width:500px) {
+    .errorPopUp {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .welcomePopup {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .Signup {
+        width: 70%;
+        transform: translate(20%, 5%);
+    }
+
+    #signUpSection form {
+        height: 720px;
+        width: auto;
+
+    }
+
+    #signUpSection h1 {
+        text-align: center;
+    }
+
+    #signUpSection label {
+        align-self: flex-start;
+        padding-top: 10px;
+
+    }
+
+    #signUpSection button {
+        height: 40px;
+        width: 75px;
+    }
+
+
+    .signUpTextContainer {
+        width: 200px;
+    }
+
+
+    .imageSection {
+        height: 200px;
+
+    }
+}
+
+@media screen and (max-width:762px) and (min-width:646px) {
+    .Signup {
+        width: 70%;
+        transform: translate(20%, 5%);
+    }
+
+    #signUpSection button {
+        height: 35px;
+        width: 75px;
+    }
+
+    .errorPopUp {
+        left: 25%;
+
+    }
+
+    .welcomePopup {
+        left: 25%;
+
+    }
+
+
+}
+
+@media screen and (max-width: 869px) and (min-width:762px) {
+
+    .Signup {
+        width: 60%;
+        transform: translate(30%, 5%);
+    }
+
+    #signUpSection label {
+        align-self: flex-start;
+
+    }
+
+    #signUpSection button {
+        height: 35px;
+        width: 75px;
+        font-size: 1rem;
+    }
+
+
+}
+
+
+@media screen and (max-width: 924px) and (min-width:869px) {
+
+    .Signup {
+        width: 60%;
+        transform: translate(30%, 5%);
+    }
+
+
+}

@@ -24,7 +24,7 @@ export default function Home() {
     const [popularRecipes, setPopularRecipes] = useState<Home[]>([])
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/popular')
+        fetch('/api/popular')
             .then((response) => response.json())
             .then((result) => {
                 setPopularRecipes(result)

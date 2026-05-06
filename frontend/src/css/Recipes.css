@@ -1,5 +1,5 @@
 main {
-    min-height: 400px;
+    min-height: 500px;
 }
 
 main.modal-open {
@@ -16,7 +16,6 @@ main.modal-open {
     height: 100%;
     margin-bottom: 35px;
     gap: 10px;
-    max-height: 400px;
     width: 100%;
 
 }
@@ -50,7 +49,48 @@ main.modal-open {
     width: 160px;
 }
 
-.addFav-popup-container {
+
+.modal-backdrop {
+    z-index: 1990 !important;
+
+}
+
+.addFavErr-btn {
+    transition: transform .3s ease-in-out;
+    height: 40px;
+    width: 100px;
+    background-color: #19521E;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-top: 40px;
+    border-radius: 5px;
+}
+
+.addFavErr-btn:hover {
+    transform: scale(1.1);
+}
+
+.addFavPopUpErr {
+    position: fixed;
+    top: 10%;
+    left: 35%;
+    text-align: center;
+    z-index: 999;
+    padding-top: 30px;
+    width: 400px;
+    height: 300px;
+    color: #1C5F21;
+    background-color: white;
+    border-radius: 7px;
+}
+
+.addFavPopUpErr p {
+    padding-top: 10px;
+}
+
+.addFav-popup-container,
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -59,6 +99,7 @@ main.modal-open {
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 
 .backTo-recipes-btn {
     padding: 10px 20px;
@@ -257,6 +298,11 @@ main {
         width: 250px;
     }
 
+    .addFavPopUpErr {
+        left: 10%;
+        width: 290px;
+    }
+
 }
 
 @media screen and (max-width:624px) and (min-width:498px) {
@@ -271,6 +317,11 @@ main {
     .addFav-popup-btntext-container {
         left: 25%;
         width: 300px;
+    }
+
+    .addFavPopUpErr {
+        left: 20%;
+        width: 270px;
     }
 
 }
@@ -291,6 +342,11 @@ main {
         left: 25%;
     }
 
+    .addFavPopUpErr {
+        left: 25%;
+    }
+
+
 }
 
 @media screen and (max-width:889px) and (min-width:713px) {
@@ -309,10 +365,15 @@ main {
         left: 30%;
     }
 
+    .addFavPopUpErr {
+        left: 30%;
+    }
+
 }
 
 @media screen and (max-width:1211px) and (min-width:889px) {
     .addFav-popup-btntext-container {
         left: 35%;
     }
+
 }

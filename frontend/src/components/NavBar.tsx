@@ -3,9 +3,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import "../css/Navbar.css"
 import { IoClose } from 'react-icons/io5';
 import { useState } from 'react';
+import { AuthContext } from '../AuthContext';
+import { useContext } from 'react';
 
 
 export default function NavBar() {
+    const Auth = useContext(AuthContext)
     const [menuOpen, setMenuOpen] = useState(false);
     return (
         <>
@@ -14,11 +17,17 @@ export default function NavBar() {
                     <h1 style={{ marginLeft: "10px", color: "#19521E" }}>Recipedia</h1>
 
                     {/* Desktop links */}
-                    <ul className="menu desktopMenu">
-                        <li><Link to="/" className="nav-link">Home</Link></li>
-                        <li><Link to="/Recipes" className="nav-link">Recipes</Link></li>
-                        <li><Link to="/FavoriteRecipes" className="nav-link">Favorite Recipes</Link></li>
-                    </ul>
+                    {Auth?.isLoggedIn ?
+                        <ul className="menu desktopMenu">
+                            <li><Link to="/" className="nav-link">Home</Link></li>
+                            <li><Link to="/Recipes" className="nav-link">Recipes</Link></li>
+                            <li><Link to="/FavoriteRecipes" className="nav-link">Favorite Recipes</Link></li>
+                            <li><Link to="/Profile" className="nav-link">Profile</Link></li>
+                        </ul> : <ul className="menu desktopMenu">
+                            <li><Link to="/" className="nav-link">Home</Link></li>
+                            <li><Link to="/Recipes" className="nav-link">Recipes</Link></li>
+                            <li><Link to="/Login" className="nav-link">Login</Link></li>
+                        </ul>}
 
                     {/* Hamburger icon */}
                     <button
@@ -32,11 +41,17 @@ export default function NavBar() {
 
                 {/* Mobile dropdown */}
                 <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-                    <ul className="menu MobileLinks">
-                        <li><Link to="/" className='nav-link' onClick={() => setMenuOpen(false)}>Home</Link></li>
-                        <li><Link to="/Recipes" className='nav-link' onClick={() => setMenuOpen(false)}>Recipes</Link></li>
-                        <li><Link to="/FavoriteRecipes" className='nav-link' onClick={() => setMenuOpen(false)}>Favorite Recipes</Link></li>
-                    </ul>
+                    {Auth?.isLoggedIn ?
+                        <ul className="menu MobileLinks">
+                            <li><Link to="/" className='nav-link' onClick={() => setMenuOpen(false)}>Home</Link></li>
+                            <li><Link to="/Recipes" className='nav-link' onClick={() => setMenuOpen(false)}>Recipes</Link></li>
+                            <li><Link to="/FavoriteRecipes" className='nav-link' onClick={() => setMenuOpen(false)}>Favorite Recipes</Link></li>
+                            <li><Link to="/Profile" className='nav-link' onClick={() => setMenuOpen(false)}>Profile</Link></li>
+                        </ul> : <ul className="menu MobileLinks">
+                            <li><Link to="/" className='nav-link' onClick={() => setMenuOpen(false)}>Home</Link></li>
+                            <li><Link to="/Recipes" className='nav-link' onClick={() => setMenuOpen(false)}>Recipes</Link></li>
+                            <li><Link to="/Login" className='nav-link' onClick={() => setMenuOpen(false)}>Login</Link></li>
+                        </ul>}
                 </div>
             </nav>
         </>

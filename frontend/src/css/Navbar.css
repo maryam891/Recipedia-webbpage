@@ -37,7 +37,7 @@
     padding: 7px;
 }
 
-/* Hamburger — gömd på desktop */
+/* Hamburger —  hidden by standard desktop */
 .hamburger-menu {
     display: none;
     background: none;
@@ -47,15 +47,11 @@
     padding: 4px;
 }
 
-/* Mobile dropdown — gömd som standard */
+/* Mobile dropdown — hidden by standard */
 .mobile-menu {
     display: none;
     background-color: rgba(255, 255, 255, 0.97);
     border-top: 1px solid #d0e8d2;
-}
-
-.mobile-menu.open {
-    display: block;
 }
 
 .mobile-menu .MobileLinks {
@@ -67,7 +63,6 @@
 }
 
 .mobile-menu .MobileLinks li {
-    display: block;
     margin: 0;
     padding: 4px 0;
     border-bottom: 1px solid #e8f0e8;
@@ -88,4 +83,15 @@
         display: flex;
         align-items: center;
     }
+
+    .mobile-menu.open {
+        display: block;
+    }
+
+    .mobile-menu .MobileLinks li {
+        display: block;
+    }
+
+
+
 }

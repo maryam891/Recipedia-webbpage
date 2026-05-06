@@ -8,6 +8,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { FaRegHeart } from "react-icons/fa6";
 import { FavContext } from '../FavoriteContext'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../AuthContext'
 
 export interface Recipe {
     name: string,
@@ -21,9 +22,6 @@ export interface Recipe {
     prepTimeMinutes: number,
     ingredients: string,
     instructions: string
-
-
-
 }
 export interface RecipesProps {
     favRecipe: Recipe[]
@@ -35,16 +33,16 @@ export default function Recipes() {
     const [clickedRecipe, setClickedRecipe] = useState<Recipe | null>(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [search, setSearch] = useState("")
-    const addFav = useContext(FavContext)
+    const Fav = useContext(FavContext)
     const [hoveredRecipeId, setHoveredRecipeId] = useState<string | null>(null)
     const [activeSearch, setActiveSearch] = useState("")
     const navigate = useNavigate()
-
+    const Auth = useContext(AuthContext)
 
 
     //Render recipes
     useEffect(() => {
-        fetch('http://localhost:8080/api/recipes')
+        fetch('/api/recipes')
             .then((response) => response.json())
             .then((result) => {
                 setRecipes(result)
@@ -53,16 +51,36 @@ export default function Recipes() {
     }, [])
 
 
+
     return (
         <>
+            {Fav.showFailedRemovePopUp === true &&
+                <div className='overlay'>
+                    <div className='addFavPopUpErr'>
+                        <h2>Failed to remove recipe!</h2>
+                        <button onClick={() => Fav?.setShowFailedRemovePopUp(false)} className='addFavErr-btn'>
+                            Ok
+                        </button>
+
+                    </div></div>}
+            {Fav?.showAddFavErrPopUp === true &&
+                <div className='overlay'>
+                    <div className='addFavPopUpErr'>
+                        <h2>Please login!</h2>
+                        <p>Please login to add to favorites!</p>
+                        <button onClick={() => Fav?.setShowAddFavErrPopUp(false)} className='addFavErr-btn'>
+                            Ok
+                        </button>
+
+                    </div></div>}
             <main className={modalOpen ? 'modal-open' : ''}>
-                {addFav.showAddFavPopUp && (
+                {Fav.showAddFavPopUp && (
                     <div className='addFav-popup-container'>
                         <div className='addFav-popup-btntext-container'>
                             <h2>Recipe added!</h2>
                             <p>Recipe has been added to favorites!</p>
                             <button onClick={() => {
-                                addFav.setShowAddFavPopUp(false)
+                                Fav.setShowAddFavPopUp(false)
                                 navigate("/FavoriteRecipes")
                             }}>Ok</button>
                         </div>
@@ -94,13 +112,14 @@ export default function Recipes() {
 
                                     {/* Find recipe id that matches on click to add recipe to favorites and show the heart icon, confirm popup when recipe is added to favorites */}
 
-                                    {addFav.favRecipe && addFav.favRecipe.find((fav) => fav.id === recipe.id) ? (
+                                    {Fav.favRecipe && Auth?.isLoggedIn && Auth?.currentUser && Fav.favRecipe.find((fav) => fav.id === recipe.id) ? (
                                         <span className='iconTextContainer'>
+                                            {/*Filter through favRecipe to find recipe that should be removed and save to setFavRecipe usestate */}
                                             <AiFillHeart
                                                 onClick={() => {
-                                                    const updated = addFav.favRecipe.filter(fav => fav.id !== recipe.id)
-                                                    addFav.setFavRecipe(updated)
-                                                    localStorage.setItem("addToFav", JSON.stringify(updated))
+                                                    const updated = Fav.favRecipe.filter(fav => fav.id !== recipe.id)
+                                                    Fav.setFavRecipe(updated)
+
                                                 }}
                                                 onMouseEnter={() => setHoveredRecipeId(recipe.id)}
                                                 onMouseLeave={() => setHoveredRecipeId(null)}
@@ -116,7 +135,7 @@ export default function Recipes() {
                                             <FaRegHeart
                                                 style={{ padding: "7px", cursor: "pointer" }}
                                                 onClick={() => {
-                                                    addFav.addToFavorite(recipe)
+                                                    Fav.addToFavorite(recipe)
 
 
                                                 }}
@@ -133,7 +152,8 @@ export default function Recipes() {
                                     <div style={{ height: "150px", marginLeft: "32px", width: "auto" }}>
                                         <p>{recipe.name}</p>
                                         <p style={{ wordSpacing: "5px" }}>Cuisine {recipe.cuisine}</p>
-                                        <p> Rating {recipe.rating}</p>
+                                        <p> Rating {recipe.rating} </p>
+
 
                                         {/* Show modal when clicking on a recipe */}
                                         <input type="button" value="See recipe" onClick={() => {
@@ -158,9 +178,11 @@ export default function Recipes() {
                             {/* Map through the filtered searched recipes to display on the browser */ }
                         }).map((recipefilter) => (
                             <div key={recipefilter.id} className='recipe-container'>
-                                {addFav.favRecipe && addFav.favRecipe.find((fav) => fav.id === recipefilter.id) ? (
+                                {Fav.favRecipe && Fav.favRecipe.find((fav) => fav.id === recipefilter.id) ? (
                                     <span className='iconTextContainer'>
-                                        <AiFillHeart style={{ padding: "7px", cursor: "pointer", color: "Palevioletred" }} onClick={() => { const updated = addFav.favRecipe.filter(fav => fav.id !== recipefilter.id); addFav.setFavRecipe(updated); localStorage.setItem("addToFav", JSON.stringify(updated)) }} onMouseEnter={() => setHoveredRecipeId(recipefilter.id)}
+                                        <AiFillHeart style={{ padding: "7px", cursor: "pointer", color: "Palevioletred" }} onClick={() => {
+                                            const updated = Fav.favRecipe.filter(fav => fav.id !== recipefilter.id); Fav.setFavRecipe(updated); {/*Filter through favRecipe to find recipe that should be removed and save to setFavRecipe usestate */ }
+                                        }} onMouseEnter={() => setHoveredRecipeId(recipefilter.id)}
                                             onMouseLeave={() => setHoveredRecipeId(null)} />
                                         {hoveredRecipeId === recipefilter.id && (
                                             <span className='addTofavHoverText'>Remove from favorites</span>
@@ -171,7 +193,7 @@ export default function Recipes() {
                                         <FaRegHeart
                                             style={{ padding: "7px", cursor: "pointer" }}
                                             onClick={() => {
-                                                addFav.addToFavorite(recipefilter)
+                                                Fav.addToFavorite(recipefilter)
 
 
                                             }}

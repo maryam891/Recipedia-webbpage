@@ -1,0 +1,351 @@
+.loginForm {
+    text-align: center;
+    transform: translate(66%, 10%);
+    height: 100%;
+    width: 40%;
+    min-height: 200px;
+    margin-bottom: 50px;
+    background-color: rgba(255, 255, 255, 0.413);
+    border: solid 2px #1C5F21;
+    border-radius: 7px;
+}
+
+
+.loginForm button {
+    align-self: center;
+    margin-bottom: 20px;
+    height: 30px;
+    width: 70px;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    background-color: #1C5F21;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.loginForm button:hover {
+    transform: scale(1.1);
+    background-color: #1C5F21;
+    border: none;
+    box-shadow: #191919 1px 1px 1px;
+}
+
+.labelInput-container {
+    width: auto;
+    height: 100%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    gap: 10px;
+}
+
+.labelInput-container label {
+    align-self: start;
+}
+
+
+.loginForm input {
+    width: auto;
+    max-width: 200px;
+    height: 20px;
+    background-color: rgba(197, 195, 230, 0.326);
+    border: solid 2px #1C5F21;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.loginForm label {
+    color: #1C5F21;
+    padding-bottom: 5px;
+}
+
+.loginForm {
+    padding-top: 40px;
+}
+
+.loginForm h1 {
+    padding-bottom: 20px;
+    color: #1C5F21;
+}
+
+.loginForm form {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 340px;
+    width: 100%;
+
+}
+
+.loginTextContainer p {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #1C5F21;
+}
+
+.welcomePopUp {
+    top: 20%;
+    left: 35%;
+    position: fixed;
+    text-align: center;
+    padding-top: 30px;
+    width: auto;
+    min-width: 300px;
+    max-width: 400px;
+    height: 200px;
+    color: #1C5F21;
+    background-color: rgba(255, 255, 255, 0.934);
+    border-radius: 7px;
+}
+
+.welcomePopUp p {
+    padding-top: 10px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginPopUpErr {
+    position: fixed;
+    text-align: center;
+    top: 20%;
+    left: 32%;
+    z-index: 999;
+    padding-top: 30px;
+    width: auto;
+    max-width: 350px;
+    height: 300px;
+    background-color: white;
+    border: solid 2px #1C5F21;
+    border-radius: 7px;
+}
+
+.loginPopUpErr h2 {
+    color: #1C5F21
+}
+
+.loginPopUpErr p {
+    padding: 15px;
+}
+
+.loginErrBtn {
+    transition: transform .3s ease-in-out;
+    height: 40px;
+    width: 90px;
+    background-color: #1C5F21;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+.loginErrBtn:hover {
+    transform: scale(1.1);
+    box-shadow: #191919 1px 1px 1px;
+}
+
+
+
+@media screen and (max-width: 407px) and (min-width: 360px) {
+
+    .loginPopUpErr {
+        left: 10%;
+        max-width: 290px;
+
+    }
+
+    .welcomePopUp {
+        left: 10%;
+        max-width: 290px;
+
+    }
+
+    .loginForm {
+        width: 70%;
+        transform: translate(20%, 10%);
+    }
+
+    #loginSection form {
+        height: 370px;
+
+    }
+
+    #loginSection h1 {
+        text-align: center;
+    }
+
+
+}
+
+@media screen and (max-width: 500px) and (min-width: 407px) {
+
+    .loginPopUpErr {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .welcomePopup {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    #loginSection form {
+        height: 370px;
+
+    }
+
+
+    .loginForm {
+        width: 70%;
+        transform: translate(20%, 10%);
+    }
+
+    #loginSection h1 {
+        text-align: center;
+    }
+
+
+}
+
+@media screen and (max-width: 646px) and (min-width:500px) {
+
+    .loginPopUpErr {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .welcomePopup {
+        left: 15%;
+        max-width: 300px;
+
+    }
+
+    .loginForm {
+        width: 60%;
+        transform: translate(30%, 10%);
+    }
+
+    #loginSection form {
+        height: 350px;
+        width: auto;
+
+    }
+
+    #loginSection h1 {
+        text-align: center;
+    }
+
+
+    .loginTextContainer p {
+        font-size: 1rem;
+    }
+
+    .loginText {
+        font-size: 1rem;
+    }
+}
+
+
+@media screen and (max-width: 646px) and (min-width:500px) {
+
+    .loginPopUpErr {
+        left: 20%;
+        max-width: 300px;
+
+    }
+
+    .welcomePopup {
+        left: 20%;
+        max-width: 300px;
+
+    }
+
+    .loginForm {
+        width: 60%;
+        transform: translate(30%, 10%);
+    }
+
+    #loginSection form {
+        height: 350px;
+        width: auto;
+
+    }
+
+    #loginSection h1 {
+        text-align: center;
+    }
+
+
+    .loginTextContainer p {
+        font-size: 1rem;
+    }
+
+    .loginText {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width:762px) and (min-width:646px) {
+
+    .loginPopUpErr {
+        left: 25%;
+
+    }
+
+    .welcomePopup {
+        left: 25%;
+
+    }
+
+    .loginForm {
+        width: 54%;
+        transform: translate(50%, 10%);
+    }
+
+    .loginTextContainer p {
+        font-size: 1rem;
+    }
+
+    .loginText {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 869px) and (min-width:762px) {
+
+    .loginForm {
+        width: 44%;
+    }
+
+    .loginTextContainer p {
+        font-size: 1rem;
+    }
+
+    .loginText {
+        font-size: 1rem;
+    }
+}

@@ -1,6 +1,8 @@
-import { useEffect, useState, createContext } from "react"
+import { useState, createContext } from "react"
 import type { Recipe } from "./components/Recipes"
 import React from "react"
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 
 interface FavContextType {
@@ -10,45 +12,84 @@ interface FavContextType {
     removeFromFavorite: (recipe: Recipe) => void,
     setShowAddFavPopUp: (value: boolean) => void,
     setRemoveFavPopUpShow: (value: boolean) => void,
+    setShowAddFavErrPopUp: (value: boolean) => void,
+    setShowFailedRemovePopUp: (value: boolean) => void,
     showAddFavPopUp: boolean,
-    removeFavPopUpShow: boolean
+    showAddFavErrPopUp: boolean,
+    removeFavPopUpShow: boolean,
+    showFailedRemovePopUp: boolean
+
 }
 
 const FavContext = createContext<FavContextType>({
     favRecipe: [],
     setFavRecipe: () => [],
+    showAddFavErrPopUp: false,
     addToFavorite: () => { },
     removeFromFavorite: () => { },
     setShowAddFavPopUp: () => { },
     setRemoveFavPopUpShow: () => { },
+    setShowAddFavErrPopUp: () => { },
+    setShowFailedRemovePopUp: () => { },
     showAddFavPopUp: false,
     removeFavPopUpShow: false,
+    showFailedRemovePopUp: false
 })
 const FavContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [favRecipe, setFavRecipe] = useState<Recipe[]>([])
     const [showAddFavPopUp, setShowAddFavPopUp] = useState(false)
     const [removeFavPopUpShow, setRemoveFavPopUpShow] = useState(false)
+    const [showAddFavErrPopUp, setShowAddFavErrPopUp] = useState(false)
+    const [showFailedRemovePopUp, setShowFailedRemovePopUp] = useState(false)
 
+    const Auth = useContext(AuthContext)
 
     function addToFavorite(recipe: Recipe) {
-        const newFavRecipe = [...favRecipe, recipe]
-        setFavRecipe(newFavRecipe)
-        localStorage.setItem("addToFav", JSON.stringify(newFavRecipe))
-        setShowAddFavPopUp(true)
+        if (Auth?.isLoggedIn === true) {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include' as const,
+                body: JSON.stringify({ recipe_id: recipe.id })
+            }
+            fetch('http://localhost:8080/addFavoriteRecipe', requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result) {
+                        const newFavRecipe = [...favRecipe, recipe]
+                        setFavRecipe(newFavRecipe)
+                        setShowAddFavPopUp(true)
+                    }
+                })
 
-
-    }
-    function removeFromFavorite() {
-        setRemoveFavPopUpShow(true)
-
-    }
-    // Load favorites from localStorage on mount
-    useEffect(() => {
-        const saved = localStorage.getItem("addToFav")
-        if (saved) {
-            setFavRecipe(JSON.parse(saved))
         }
-    }, [])
-    return <FavContext.Provider value={{ favRecipe, setFavRecipe, addToFavorite, removeFromFavorite, setRemoveFavPopUpShow, removeFavPopUpShow, setShowAddFavPopUp, showAddFavPopUp }}>{children}</FavContext.Provider>
+        else {
+            setShowAddFavErrPopUp(true)
+        }
+
+
+
+    }
+    function removeFromFavorite(recipe: Recipe) {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include' as const,
+            body: JSON.stringify({ recipe_id: recipe.id })
+        }
+        fetch("http://localhost:8080/removeFavoriteRecipe", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result) {
+                    setRemoveFavPopUpShow(true)
+                }
+                else {
+                    setShowFailedRemovePopUp(true)
+                }
+            })
+
+
+    }
+    return <FavContext.Provider value={{ favRecipe, setFavRecipe, addToFavorite, removeFromFavorite, setRemoveFavPopUpShow, removeFavPopUpShow, setShowAddFavPopUp, showAddFavPopUp, setShowAddFavErrPopUp, showAddFavErrPopUp, setShowFailedRemovePopUp, showFailedRemovePopUp }}>{children}</FavContext.Provider>
 }
 export { FavContext, FavContextProvider }
