@@ -34,14 +34,12 @@ require("dotenv").config();
     const IN_Prod = process.env.NODE_ENV === "production";
     const app = express();
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-    app.get("/{*path}", (req, res) => {
-      res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
-    });
     app.use(express.json());
     app.use(
       cors({
-        origin: "http://localhost:5173",
+        origin: IN_Prod
+          ? "https://din-railway-url.up.railway.app"
+          : "http://localhost:5173",
         credentials: true,
       }),
     );
