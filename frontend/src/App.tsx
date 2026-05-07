@@ -70,7 +70,7 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include' as const,
     }
-    fetch("http://localhost:8080/logout", requestOptions)
+    fetch("/logout", requestOptions)
       .then((res) => {
         if (res.status === 200) {
           return res.json()
@@ -92,7 +92,7 @@ function App() {
 
   useEffect(() => {
 
-    fetch("http://localhost:8080/user", {
+    fetch("/user", {
       credentials: 'include' as const
     }
 

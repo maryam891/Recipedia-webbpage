@@ -52,7 +52,7 @@ const FavContextProvider = ({ children }: { children: React.ReactNode }) => {
                 credentials: 'include' as const,
                 body: JSON.stringify({ recipe_id: recipe.id })
             }
-            fetch('http://localhost:8080/addFavoriteRecipe', requestOptions)
+            fetch('/addFavoriteRecipe', requestOptions)
                 .then((response) => response.json())
                 .then((result) => {
                     if (result) {
@@ -77,7 +77,7 @@ const FavContextProvider = ({ children }: { children: React.ReactNode }) => {
             credentials: 'include' as const,
             body: JSON.stringify({ recipe_id: recipe.id })
         }
-        fetch("http://localhost:8080/removeFavoriteRecipe", requestOptions)
+        fetch("/removeFavoriteRecipe", requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 if (result) {
