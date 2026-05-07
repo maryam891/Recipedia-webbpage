@@ -33,7 +33,7 @@ require("dotenv").config();
     const twoHours = 1000 * 60 * 60 * 2;
     const IN_Prod = process.env.NODE_ENV === "production";
     const app = express();
-    app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
     app.get("/{*path}", (req, res) => {
       res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
@@ -209,7 +209,7 @@ require("dotenv").config();
       });
     });
     app.get("/{*path}", (req, res) => {
-      res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+      res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
     });
     app.listen(8080, () => {
       console.log("Server running on http://localhost:8080");
