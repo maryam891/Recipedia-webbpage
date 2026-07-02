@@ -41,7 +41,11 @@ const FavContextProvider = ({ children }: { children: React.ReactNode }) => {
     const Auth = useContext(AuthContext)
 
     async function addToFavorite(recipe: Recipe) {
-        if (Auth?.isLoggedIn === true) {
+        if (Auth?.isLoggedIn !== true) {
+            setShowAddFavErrPopUp(true)
+        }
+        else {
+
 
             const alreadyExist = favRecipe.find((fav) => fav.id === recipe.id)
             if (alreadyExist) {

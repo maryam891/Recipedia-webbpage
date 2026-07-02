@@ -53,7 +53,7 @@ export default function Recipes() {
 
                 setRecipes(result);
             } catch (error) {
-                console.error(error);
+                console.error(error, "could not get recipes");
             }
         };
 
