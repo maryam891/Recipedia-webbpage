@@ -1,10 +1,13 @@
 import express from "express";
+import pg from "pg";
+const { Pool } = pg;
+import connectPgSimple from "connect-pg-simple";
+import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 import session from "express-session";
-import * as sqlite from "sqlite";
-import { Database } from "sqlite";
-import sqlite3 from "sqlite3";
-const SQLiteStore = require("connect-sqlite3")(session);
+
+const PgSession = connectPgSimple(session);
 
 declare module "express-session" {
   interface SessionData {
@@ -19,10 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5174",
-      "https://recipedia-webbpage-production.up.railway.app/api/$1",
-    ],
+    origin: ["http://localhost:5174", "https://recipedia-webpage.vercel.app/"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -34,20 +34,19 @@ app.use(express.json());
 
 app.set("trust proxy", 1);
 
-let database: Database;
+const database = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
-require("dotenv").config();
 (async () => {
   try {
     console.log("Opening database...");
-    database = await sqlite.open({
-      driver: sqlite3.Database,
-      filename: "./recipedia.sqlite",
-    });
+
     console.log("Database opened successfully");
 
-    await database.run("PRAGMA foreign_keys = ON");
-    console.log("Redo att göra databasanrop");
+    await database.query("SELECT 1");
+    console.log("Database connected successfully");
 
     const bcrypt = require("bcrypt");
     //Expire cookie time
@@ -56,7 +55,11 @@ require("dotenv").config();
 
     app.use(
       session({
-        store: new SQLiteStore({ db: "sessions.sqlite", dir: "./" }),
+        store: new PgSession({
+          pool: database,
+          tableName: "session",
+          createTableIfMissing: true,
+        }),
         secret: process.env.SESSION_SECRET ?? "fallback-secret",
         resave: false,
         saveUninitialized: false,
@@ -82,9 +85,9 @@ require("dotenv").config();
     app.post("/api/signup", async (req, res) => {
       //Hash password using bcrypt function to get unique string data
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      let alreadyExist = await database.get(
-        "SELECT Email FROM Users WHERE Email=?",
-        [req.body.Email],
+      let alreadyExist = await database.query(
+        "SELECT Email FROM Users WHERE Email=$1",
+        [req.body.email],
       );
       if (alreadyExist) {
         res
@@ -92,21 +95,16 @@ require("dotenv").config();
           .send({ message: "User already exist with the same email adress" });
         return;
       }
-      let signedUpUser = await database.run(
-        "INSERT INTO Users(email, password, name) VALUES(?,?, ?)",
+      let signedUpUser = await database.query(
+        "INSERT INTO Users(email, password, name) VALUES($1,$2, $3)",
         [req.body.email, hashedPassword, req.body.name],
       );
       let cookieUserInfo;
-      if (
-        signedUpUser &&
-        signedUpUser.lastID &&
-        signedUpUser.changes &&
-        signedUpUser.changes > 0
-      ) {
+      if (signedUpUser.rows.length > 0) {
         cookieUserInfo = req.session.Users = {
           name: req.body.name,
           email: req.body.email,
-          id: signedUpUser.lastID,
+          id: signedUpUser.rows[0].id,
         };
       }
 
@@ -130,30 +128,31 @@ require("dotenv").config();
 
     app.post("/api/Login", async (req, res) => {
       try {
-        let loggedInUsers = await database.all(
+        let loggedInUsers = await database.query(
           "SELECT * FROM Users WHERE email = ?",
           [req.body.email],
         );
         //Get first user data
-        let user = loggedInUsers[0];
+        let user = loggedInUsers.rows[0];
         let cookieUserInfo;
         //If there is a user with a matching email and password that matches the stored password, then save the session.
         // This also handles both bcrypt-hashed passwords and older plain-text values.
-        if (loggedInUsers.length > 0 && user) {
+        if (loggedInUsers.rows.length > 0 && user) {
           const passwordMatches =
             (await bcrypt.compare(req.body.password, user.password)) ||
             req.body.password === user.password;
 
           if (passwordMatches) {
             cookieUserInfo = req.session.Users = {
-              name: loggedInUsers[0].name,
-              email: loggedInUsers[0].email,
-              id: loggedInUsers[0].id,
+              name: user.name,
+              email: user.email,
+              id: user.id,
             };
           }
         }
         res.status(200).send(cookieUserInfo);
-      } catch {
+      } catch (error) {
+        console.log(error);
         res.status(401).send({ message: "Invalid email or password" });
       }
     });
@@ -162,12 +161,13 @@ require("dotenv").config();
     app.get("/api/getFavoriteRecipes", async (req, res) => {
       try {
         const userId = req.session.Users?.id;
-        let favs = await database.all(
-          `SELECT recipes.id, name, cookTimeMinutes, servings, prepTimeMinutes, recipe_image, cuisine, rating FROM recipes INNER JOIN FavoriteRecipes ON recipes.id = FavoriteRecipes.recipe_id WHERE FavoriteRecipes.userId = ?`,
+        let favs = await database.query(
+          `SELECT recipes.id, name, cookTimeMinutes, servings, prepTimeMinutes, recipe_image, cuisine, rating FROM recipes INNER JOIN FavoriteRecipes ON recipes.id = FavoriteRecipes.recipe_id WHERE FavoriteRecipes.userId = $1`,
           [userId],
         );
         res.status(200).send(favs);
-      } catch {
+      } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Not logged in" });
       }
     });
@@ -176,12 +176,13 @@ require("dotenv").config();
     app.delete("/api/removeFavoriteRecipe", async (req, res) => {
       try {
         const userId = req.session.Users?.id;
-        let delFavRecipe = await database.run(
-          "DELETE FROM FavoriteRecipes WHERE userId=? AND recipe_id=?",
+        let delFavRecipe = await database.query(
+          "DELETE FROM FavoriteRecipes WHERE userId=$1 AND recipe_id=$2",
           [userId, req.body.recipe_id],
         );
         res.status(200).send(delFavRecipe);
-      } catch {
+      } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Could not remove recipe" });
       }
     });
@@ -191,12 +192,13 @@ require("dotenv").config();
       try {
         const userId = req.session.Users?.id;
         const recipeId = req.body.recipe_id;
-        let addFav = await database.run(
-          "INSERT INTO FavoriteRecipes(userId, recipe_id) VALUES(?,?)",
+        let addFav = await database.query(
+          "INSERT INTO FavoriteRecipes(userId, recipe_id) VALUES($1,$2)",
           [userId, recipeId],
         );
-        res.status(200).send(addFav);
-      } catch {
+        res.status(200).send(addFav.rows[0]);
+      } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "could not add to favorites" });
       }
     });
@@ -204,11 +206,12 @@ require("dotenv").config();
     //Get recipes
     app.get("/api/recipes", async (req, res) => {
       try {
-        let recipes = await database.all(
+        let recipes = await database.query(
           "SELECT name, cuisine, recipe_image, cookTimeMinutes, servings, prepTimeMinutes, rating, id FROM recipes",
         );
-        res.status(200).send(recipes);
-      } catch {
+        res.status(200).send(recipes.rows);
+      } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Could not get recipes" });
       }
     });
@@ -216,10 +219,10 @@ require("dotenv").config();
     //Get popular recipes
     app.get("/api/popular", async (req, res) => {
       try {
-        let popularRecipes = await database.all(
+        let popularRecipes = await database.query(
           "SELECT name, cuisine, recipe_image, rating, id FROM recipes WHERE rating > 4.6 ",
         );
-        res.status(200).send(popularRecipes);
+        res.status(200).send(popularRecipes.rows);
       } catch {
         res.status(400).send({ message: "Could not get favorite recipes" });
       }
@@ -227,27 +230,28 @@ require("dotenv").config();
     //Get selected recipe for recipe modal
     app.get("/api/recipes/:id", async (req, res) => {
       try {
-        let instructionsDetail = await database.all(
+        let instructionsDetail = await database.query(
           `SELECT recipes.id,instruction,name,cookTimeMinutes, servings,prepTimeMinutes
          FROM recipes INNER JOIN instructions
          ON recipes.id=instructions.recipe_id
-         WHERE recipes.id= ?`,
+         WHERE recipes.id= $1`,
           [req.params.id],
         );
 
-        let ingredientsDetail = await database.all(
+        let ingredientsDetail = await database.query(
           `SELECT recipes.id,ingredient,name,cookTimeMinutes, servings,prepTimeMinutes
          FROM recipes INNER JOIN ingredients
          ON recipes.id=ingredients.recipe_id
-         WHERE recipes.id= ?`,
+         WHERE recipes.id= $1`,
           [req.params.id],
         );
 
         res.status(200).send({
-          ingredientsSection: ingredientsDetail,
-          instructionsSection: instructionsDetail,
+          ingredientsSection: ingredientsDetail.rows,
+          instructionsSection: instructionsDetail.rows,
         });
-      } catch {
+      } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Could not get recipe" });
       }
     });

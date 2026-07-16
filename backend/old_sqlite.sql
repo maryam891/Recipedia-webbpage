@@ -341,7 +341,7 @@
 
 -- INSERT INTO ingredients (recipe_id, ingredient) VALUES (14, 'one egg');
 
--- INSERT INTO ingredients (recipe_id, ingredient) VALUES (14, 'cooking oil');
+-- INSERT INTO ingredients (recipe_id, ingredient) VALUES (14, 'Cooking oil');
 
 -- INSERT INTO ingredients (recipe_id, ingredient) VALUES (15, 'Mustard greens, washed and chopped');
 
