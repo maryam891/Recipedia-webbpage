@@ -12,6 +12,7 @@
 }
 
 .profilePopUpErr {
+    color: #1C5F21;
     position: fixed;
     text-align: center;
     transform: translate(-10%, -10%);
@@ -22,6 +23,24 @@
     background-color: white;
     border: solid 2px #1C5F21;
     border-radius: 7px;
+}
+
+.removeAccount-popup {
+    max-width: 300px;
+    background-color: white;
+    color: #1C5F21;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    position: fixed;
+    transform: translate(-1%, -30%);
+}
+
+.removeAccount-popup p {
+    padding: 10px;
 }
 
 .profileErrBtn {
@@ -58,8 +77,9 @@
 .noDelBtn {
     transition: transform .3s ease-in-out;
     background-color: white;
-    color: #1C5F21;
-    border: solid 2px #1C5F21;
+    border: solid 2px #a21927;
+    cursor: pointer;
+    color: #a21927;
 
 }
 
@@ -75,6 +95,8 @@
     flex-wrap: wrap;
     gap: 8px;
     width: auto;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .delBtnContainer button {

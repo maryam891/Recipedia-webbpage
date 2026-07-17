@@ -22,7 +22,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5174", "https://recipedia-webpage.vercel.app/"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://recipedia-webpage.vercel.app",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -81,37 +85,56 @@ const database = new Pool({
       }
     });
 
+    //Remove user account
+    app.delete("/api/removeAccount", async (request, response) => {
+      try {
+        await database.query("DELETE FROM FavoriteRecipes WHERE userId=$1", [
+          request.body.id,
+        ]);
+        await database.query("DELETE FROM users WHERE id=$1", [
+          request.body.id,
+        ]);
+
+        response.status(200).send({ message: "Account removed!" });
+      } catch (error) {
+        console.log(error);
+        response.status(400).send({ message: "Failed to remove account" });
+      }
+    });
+
     //Signup
     app.post("/api/signup", async (req, res) => {
-      //Hash password using bcrypt function to get unique string data
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      let alreadyExist = await database.query(
-        "SELECT Email FROM Users WHERE Email=$1",
-        [req.body.email],
-      );
-      if (alreadyExist) {
-        res
-          .status(409)
-          .send({ message: "User already exist with the same email adress" });
-        return;
-      }
-      let signedUpUser = await database.query(
-        "INSERT INTO Users(email, password, name) VALUES($1,$2, $3)",
-        [req.body.email, hashedPassword, req.body.name],
-      );
-      let cookieUserInfo;
-      if (signedUpUser.rows.length > 0) {
-        cookieUserInfo = req.session.Users = {
+      try {
+        //Hash password using bcrypt function to get unique string data
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        let alreadyExist = await database.query(
+          "SELECT Email FROM Users WHERE Email=$1",
+          [req.body.email],
+        );
+        if (alreadyExist.rows.length > 0) {
+          res
+            .status(409)
+            .send({ message: "User already exist with the same email adress" });
+          return;
+        }
+        let signedUpUser = await database.query(
+          "INSERT INTO Users(email, password, name) VALUES($1,$2, $3) RETURNING id",
+          [req.body.email, hashedPassword, req.body.name],
+        );
+
+        const cookieUserInfo = (req.session.Users = {
           name: req.body.name,
           email: req.body.email,
           id: signedUpUser.rows[0].id,
-        };
-      }
+        });
 
-      if (cookieUserInfo) {
-        res.status(200).send(cookieUserInfo);
-      } else {
-        res.status(400).send({ message: "Could not create user" });
+        if (cookieUserInfo) {
+          res.status(200).send(cookieUserInfo);
+        } else {
+          res.status(400).send({ message: "Could not create user" });
+        }
+      } catch (error) {
+        console.log(error);
       }
     });
 
@@ -129,14 +152,16 @@ const database = new Pool({
     app.post("/api/Login", async (req, res) => {
       try {
         let loggedInUsers = await database.query(
-          "SELECT * FROM Users WHERE email = ?",
+          "SELECT * FROM Users WHERE email = $1",
           [req.body.email],
         );
+        console.log(loggedInUsers.rows);
         //Get first user data
         let user = loggedInUsers.rows[0];
         let cookieUserInfo;
         //If there is a user with a matching email and password that matches the stored password, then save the session.
         // This also handles both bcrypt-hashed passwords and older plain-text values.
+
         if (loggedInUsers.rows.length > 0 && user) {
           const passwordMatches =
             (await bcrypt.compare(req.body.password, user.password)) ||
@@ -150,10 +175,13 @@ const database = new Pool({
             };
           }
         }
-        res.status(200).send(cookieUserInfo);
+        if (cookieUserInfo) {
+          res.status(200).send(cookieUserInfo);
+        } else {
+          res.status(401).send({ message: "Invalid email or password" });
+        }
       } catch (error) {
         console.log(error);
-        res.status(401).send({ message: "Invalid email or password" });
       }
     });
 
@@ -165,7 +193,7 @@ const database = new Pool({
           `SELECT recipes.id, name, cookTimeMinutes, servings, prepTimeMinutes, recipe_image, cuisine, rating FROM recipes INNER JOIN FavoriteRecipes ON recipes.id = FavoriteRecipes.recipe_id WHERE FavoriteRecipes.userId = $1`,
           [userId],
         );
-        res.status(200).send(favs);
+        res.status(200).send(favs.rows);
       } catch (error) {
         console.log(error);
         res.status(400).send({ message: "Not logged in" });
