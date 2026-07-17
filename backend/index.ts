@@ -70,7 +70,7 @@ const database = new Pool({
           httpOnly: true,
           secure: IN_Prod,
           maxAge: twoHours,
-          sameSite: "lax",
+          sameSite: IN_Prod ? "none" : "lax",
         },
       }),
     );
