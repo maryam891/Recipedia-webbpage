@@ -1,6 +1,6 @@
 import axios from "axios";
 const api = axios.create({
-  baseURL: "/",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 //Use axios interceptor to check when session is expired(401) and if url is not Login since session can expire on other pages
