@@ -37,10 +37,10 @@ app.options("*", cors());
 app.use(express.json());
 
 app.set("trust proxy", 1);
-
+console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
+console.log("DATABASE_URL host:", process.env.DATABASE_URL?.split("@")[1]);
 const database = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
 });
 
 (async () => {
