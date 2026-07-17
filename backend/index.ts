@@ -68,9 +68,9 @@ const database = new Pool({
         saveUninitialized: false,
         cookie: {
           httpOnly: true,
-          secure: IN_Prod,
+          secure: true,
           maxAge: twoHours,
-          sameSite: IN_Prod ? "none" : "lax",
+          sameSite: "none",
         },
       }),
     );
